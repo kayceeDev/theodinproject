@@ -4,7 +4,7 @@ function computerPlay() {
   return computerOptions[Math.floor(Math.random() * computerOptions.length)];
 }
 
-// compares users hand with computer hands
+// compares user's hand with computer hands
 function playRound(playerSelection, computerSelection) {
   playerSelection = playerSelection.toLowerCase();
   computerSelection = computerSelection.toLowerCase();
