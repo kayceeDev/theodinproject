@@ -10,8 +10,12 @@ let playerCount = 0;
 function playerOption(e) {
   const playerSelection = e.target.textContent;
   const computerSelection = computerPlay();
-  if (sessionCount === 5) {
-    sessionCountDiv.textContent = `final score is Computer ${computerCount} vs ${playerCount} Player`;
+  if (computerCount == 5 || playerCount == 5) {
+    if (computerCount > playerCount) {
+      sessionCountDiv.textContent = `final score is Computer ${computerCount} vs ${playerCount} Player. Computer wins this round`;
+    } else {
+      sessionCountDiv.textContent = `final score is Computer ${computerCount} vs ${playerCount} Player. Player wins this round`;
+    }
     playAgain.classList.toggle("active");
   } else {
     let outCome = playRound(playerSelection, computerSelection);
