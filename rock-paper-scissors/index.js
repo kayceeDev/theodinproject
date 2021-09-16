@@ -1,6 +1,54 @@
+const buttons = document.querySelectorAll(".btn");
+let playerScores = document.querySelector(".player-count");
+let computerScores = document.querySelector(".computer-count");
+let sessionCountDiv = document.querySelector(".session-count");
+let playAgain = document.querySelector(".play-again");
+let sessionCount = 0;
+let computerCount = 0;
+let playerCount = 0;
+
+function playerOption(e) {
+  const playerSelection = e.target.textContent;
+  const computerSelection = computerPlay();
+  if (sessionCount === 5) {
+    sessionCountDiv.textContent = `final score is Computer ${computerCount} vs ${playerCount} Player`;
+    playAgain.classList.toggle("active");
+  } else {
+    let outCome = playRound(playerSelection, computerSelection);
+    if (outCome === "computer wins") {
+      computerCount += 1;
+      computerScores.textContent = computerCount;
+    } else if (outCome === "player wins") {
+      playerCount += 1;
+      playerScores.textContent = playerCount;
+    } else {
+      playerScores = playerScores;
+      computerScores = computerScores;
+    }
+    sessionCount++;
+    sessionCountDiv.textContent = sessionCount;
+  }
+}
+
+function reset() {
+  computerCount = 0;
+  playerCount = 0;
+  sessionCount = 0;
+  playerScores.textContent = playerCount;
+  computerScores.textContent = computerCount;
+  playAgain.classList.toggle("active");
+  sessionCountDiv.textContent = "0";
+}
+
+buttons.forEach((btn) => {
+  btn.addEventListener("click", playerOption);
+});
+
+playAgain.addEventListener("click", reset);
+
 // Computer chooses a hand
 function computerPlay() {
-  computerOptions = ["rock", "paper", "scissors"];
+  computerOptions = ["paper", "rocks", "scissors"];
   return computerOptions[Math.floor(Math.random() * computerOptions.length)];
 }
 
@@ -8,50 +56,20 @@ function computerPlay() {
 function playRound(playerSelection, computerSelection) {
   playerSelection = playerSelection.toLowerCase();
   computerSelection = computerSelection.toLowerCase();
-
-  return playerSelection === computerSelection
-    ? "Draw game"
-    : (computerSelection === "rocks" && playerSelection === "scissors") ||
-      (computerSelection === "scissors" && playerSelection === "paper") ||
-      (computerSelection === "paper" && playerSelection === "rocks")
-    ? `You Lose! ${computerSelection} beats ${playerSelection}`
-    : (computerSelection === "scissors" && playerSelection === " rocks") ||
-      (computerSelection === "paper" && playerSelection === "scissors") ||
-      (computerSelection === "rocks" && playerSelection === "paper")
-    ? `You win! ${playerSelection} beats ${computerSelection}`
-    : "The game is indecissive";
-}
-
-// plays game for 5times and displays winner
-let game = (num) => {
-  let playerScore = 0;
-  let computerScore = 0;
-  let count = num;
-  while (count > 0) {
-    const playerSelection = prompt(
-      "To play the game, enter a selection (rock, paper or selction): "
-    );
-    const computerSelection = computerPlay();
-    outCome = playRound(playerSelection, computerSelection);
-    if (
-      outCome === `You Lose! ${computerSelection} beats ${playerSelection}` &&
-      outCome !== "Draw game" &&
-      outCome !== "The game is indecissive"
-    ) {
-      computerScore += 1;
-    } else if (
-      outCome !== "Draw game" &&
-      outCome !== "The game is indecissive"
-    ) {
-      playerScore += 1;
-    }
-    count--;
+  if (playerSelection === computerSelection) return;
+  else if (
+    (computerSelection === "rocks" && playerSelection === "scissors") ||
+    (computerSelection === "scissors" && playerSelection === "paper") ||
+    (computerSelection === "paper" && playerSelection === "rocks")
+  ) {
+    return "computer wins";
+  } else if (
+    (playerSelection === "rocks" && computerSelection === "scissors") ||
+    (playerSelection === "scissors" && computerSelection === "paper") ||
+    (playerSelection === "paper" && computerSelection === "rocks")
+  ) {
+    return "player wins";
+  } else {
+    return;
   }
-  return computerScore > playerScore
-    ? `You Lose! Computer score : ${computerScore}, Player score : ${playerScore}`
-    : computerScore < playerScore
-    ? `You Win! Computer Score: ${computerScore}, Player score ${playerScore}`
-    : `Draw game! Computer Score: ${computerScore}, Player score ${playerScore}`;
-};
-
-console.log(game(5));
+}

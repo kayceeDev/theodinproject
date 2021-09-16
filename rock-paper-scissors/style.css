@@ -1,0 +1,8 @@
+
+.play-again{
+    display: none;
+}
+
+.active{
+    display: block;
+}
